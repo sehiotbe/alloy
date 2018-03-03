@@ -16,6 +16,8 @@
 #include "CryptoNoteProtocol/CryptoNoteProtocolHandler.h"
 #include "Serialization/SerializationTools.h"
 #include "version.h"
+#include <iostream>
+#include <locale>
 
 namespace {
 template <typename T>
@@ -71,8 +73,8 @@ DaemonCommandsHandler::DaemonCommandsHandler(CryptoNote::Core& core, CryptoNote:
 std::string DaemonCommandsHandler::get_commands_str()
 {
   std::stringstream ss;
-  ss << CRYPTONOTE_NAME << " v" << PROJECT_VERSION_LONG << ENDL;
-  ss << "Commands: " << ENDL;
+  ss << "\n\nDaemon Commands: \n" << ENDL;
+  std::cout.imbue(std::locale(""));
   std::string usage = m_consoleHandler.getUsage();
   boost::replace_all(usage, "\n", "\n  ");
   usage.insert(0, "  ");
@@ -161,7 +163,7 @@ bool DaemonCommandsHandler::print_bci(const std::vector<std::string>& args)
 bool DaemonCommandsHandler::set_log(const std::vector<std::string>& args)
 {
   if (args.size() != 1) {
-    std::cout << "use: set_log <log_level_number_0-5>" << ENDL;
+    std::cout << "use: set_log <log_level_number_0-4>" << ENDL;
     return true;
   }
 
@@ -334,6 +336,10 @@ bool DaemonCommandsHandler::hashrate(const std::vector<std::string>& args)
 //--------------------------------------------------------------------------------
 bool DaemonCommandsHandler::supply(const std::vector<std::string>& args)
 {
-  std::cout << "Circulating supply: " << m_core.getTotalGeneratedAmount() << "/84000000 XAO" << std::endl;
+  auto s = m_core.getTotalGeneratedAmount();
+  auto p = (s / 84000000.00) * 100;
+
+  std::cout << "Circulating supply: " << s << " XAO (" << p << "%)" << std::endl;
+  
   return true;
 }
