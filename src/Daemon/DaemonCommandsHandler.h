@@ -68,4 +68,5 @@ private:
   bool total_txs(const std::vector<std::string>& args);
   bool mempool(const std::vector<std::string>& args);
   bool hashrate(const std::vector<std::string>& args);
+  bool supply(const std::vector<std::string>& args);
 };

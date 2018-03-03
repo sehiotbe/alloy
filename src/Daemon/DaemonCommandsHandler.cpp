@@ -64,6 +64,7 @@ DaemonCommandsHandler::DaemonCommandsHandler(CryptoNote::Core& core, CryptoNote:
   m_consoleHandler.setHandler("total_txs", boost::bind(&DaemonCommandsHandler::total_txs, this, _1), "Total number of transactions in the network, excluding coinbase");
   m_consoleHandler.setHandler("mempool", boost::bind(&DaemonCommandsHandler::mempool, this, _1), "Total number of transactions in memory pool");
   m_consoleHandler.setHandler("hashrate", boost::bind(&DaemonCommandsHandler::hashrate, this, _1), "Estimated network hash rate");
+  m_consoleHandler.setHandler("supply", boost::bind(&DaemonCommandsHandler::supply, this, _1), "Total XAO currently in circulation");
 }
 
 //--------------------------------------------------------------------------------
@@ -328,5 +329,11 @@ bool DaemonCommandsHandler::mempool(const std::vector<std::string>& args)
 bool DaemonCommandsHandler::hashrate(const std::vector<std::string>& args)
 {
   std::cout << "Estimated network hash rate: " << m_core.getDifficultyForNextBlock() / 180 << std::endl;
+  return true;
+}
+//--------------------------------------------------------------------------------
+bool DaemonCommandsHandler::supply(const std::vector<std::string>& args)
+{
+  std::cout << "Circulating supply: " << m_core.getTotalGeneratedAmount() << "/84000000 XAO" << std::endl;
   return true;
 }
